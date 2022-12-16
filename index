@@ -1,0 +1,87 @@
+
+import React,{useState,useEffect} from 'react';
+import axios from 'axios'
+
+import '../styles/employeedata.css'
+
+
+import AddEmployee from '../components/AddEmployee';
+import EmployeeMain from '../components/EmployeeMain';
+import Sidebar from '../components/Sidebar';
+import EditEmployee from '../components/EditEmployee'
+
+const Employees = () => {
+
+  const [data,setData]=useState([])
+  const [show ,setShow]=useState(false)
+  const [edit ,setEdit]=useState(false)
+  const [id ,setId]=useState("")
+  
+
+
+
+  const url="http://192.168.2.74/employee/all";
+  
+
+
+
+  useEffect(() => {
+    const getData=async()=>{
+
+      const {data:res}=await axios.get(url)
+      setData(res)
+    }
+
+      getData();
+      
+      
+  
+   
+    
+    
+    
+  }, [])
+console.log(data )
+
+
+  
+
+
+  return (
+
+    <>
+    <div>
+      <Sidebar/>
+      <div className='components'>
+      {!show && !edit && (
+                <>
+                  <EmployeeMain data={data} setData={setData} setShow={setShow} setEdit={setEdit} setId={setId}/>
+    
+                </>
+            )}
+          
+            {show && (
+               <AddEmployee setShow={setShow} data={data} setData={setData}/>
+            )}
+           
+            {edit && (
+                <EditEmployee setEdit={setEdit} id={id}/> 
+            )}
+      
+      </div>
+
+    </div>
+   
+    </>
+
+
+
+
+
+
+
+    
+  )
+}
+
+export default Employees
